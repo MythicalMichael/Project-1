@@ -1,3 +1,5 @@
+'use strict';
+
 //after pressing play button or after game Over
 //button click calls Start
 /*

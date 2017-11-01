@@ -1,61 +1,55 @@
 'use strict';
 
-/**
- * Define an object to hold all our images for the game so images
- * are only ever created once. This type of object is known as a
- * singleton.
- */
-
-
 function Game(container) {
   var self = this;
-
   self.container = container;
   self.canvas = document.getElementById('game');
   self.ctx = self.canvas.getContext('2d');
 
   self.height = self.canvas.height;
   self.width = self.canvas.width;
-  //------ HELP-------
-  //self.obstacle = obstacle1;
-  //------------------
 
-  self.leftWallX = 50;
-  self.rightWallX = 350;
+  self.obstacle = new Obstacle();
+
+  self.leftWallX = 30;
+  self.rightWallX = 360;
   self.wallWidth = 10;
-
   self.plaverWidth = 20;
-  self.plaverHeight = 50;
+  self.plaverHeight = 40;
   self.bottomBorderY = self.height - (self.plaverHeight / 2);
-  //self.playerSpeed = 2;
 
   self.playerJumpingRight = null;
   self.playerJumpingLeft = null;
-
   self.isRunning = false;
 
+  // -- creating the start button -- //
 
-  // -- create the start button
+  // @todo uncomment later:
 
-  // var button = document.createElement('button');
-  // button.innerText = 'start';
-  // button.classList.add('start-button');
-  // self.container.appendChild(button);
-  //
-  // // @todo uncomment later
-  // self.start();
-  // button.style.display = 'none';
-  //
-  // button.addEventListener("click", function() {
-  //   self.start();
-  //   button.style.display = "none";
-  // });
+  var button = document.createElement('button');
+  button.innerText = 'start';
+  button.classList.add('start-button');
+  self.container.appendChild(button);
+
+  // @todo uncomment later:
+
+  button.addEventListener("click", function() {
+    self.start();
+    button.style.display = "none";
+  });
+
+  //------SPAWNING INTERVAL------//
+  self.intervalSpawn = window.setInterval(function() {
+
+    var newObstacle = new Obstacle();
+
+
+
+  });
 }
 
 
 // ----- UPDATE STATE -----
-
-
 Game.prototype.updatePlayer = function() {
   var self = this;
   if (self.playerJumpingRight === true) {
@@ -67,7 +61,6 @@ Game.prototype.updatePlayer = function() {
       self.playerJumpingRight = null;
       self.isRunning = false;
       self.plaverX = self.rightWallX - self.plaverWidth;
-
     }
   }
 
@@ -81,23 +74,26 @@ Game.prototype.updatePlayer = function() {
       self.playerJumpingLeft = null;
       self.isRunning = false;
       self.plaverX = (self.leftWallX + self.wallWidth);
+    }
+  }
+};
 
+Game.prototype.updateBorder = function() {
+  var self = this;
+  //-----not sure about this when create many obstacles the border may appear again!!!!!----//
+  if (self.obstacle.speed > (self.height / 3)) {
+    self.bottomBorderY += 1;
+    if (self.bottomBorderY === self.height) {
+      self.bottomBorderY += 0;
     }
   }
 };
 
 
-
-// ----- DRAW -----
+// ----- DRAW PLAYER / WALLS / BOTTOM BORDER----- //
 
 Game.prototype.drawPlayer = function() {
   var self = this;
-
-  // if plaver jumping right // if (self.playerJumpingRight) { .... }
-  //   playerX++
-  //   if player reached the right side
-  //     player not moving right anymore
-
   self.ctx.fillStyle = "rgb(50,50,250)";
   self.ctx.fillRect(self.plaverX, self.plaverY, self.plaverWidth, self.plaverHeight);
 };
@@ -108,60 +104,48 @@ Game.prototype.drawWalls = function() {
   self.ctx.fillStyle = "rgb(255,50,50)";
   self.ctx.fillRect(self.leftWallX, 0, self.wallWidth, self.height);
   self.ctx.fillRect(self.rightWallX, 0, self.wallWidth, self.height);
+
+};
+
+Game.prototype.drawBorder = function() {
+  var self = this;
+  self.ctx.fillStyle = "rgb(102, 0, 102)";
   self.ctx.fillRect(0, self.bottomBorderY, self.width, self.plaverHeight / 2);
 };
 
 
+//--------DRAW-------//
 Game.prototype.draw = function() {
   var self = this;
-
+  //---clearing canvas----//
   self.ctx.clearRect(0, 0, self.width, self.height);
-
+  //-----movement and redrawning of objects-----///
   self.updatePlayer();
-
+  self.updateBorder();
+  self.obstacle.draw();
   self.drawWalls();
+  self.drawBorder();
   self.drawPlayer();
-
+  self.obstacle.updateObstacle();
   window.requestAnimationFrame(function() {
     self.draw();
+
   });
 };
 
 
-
-Game.prototype.background = function() {
-
-
-
-
-};
-
-
-
 // ------- START -------
-
-
 
 Game.prototype.start = function() {
   var self = this;
 
-
-
-
   // prepare the game status
-
-
   self.plaverX = self.leftWallX + self.wallWidth;
   self.plaverY = self.height - (self.plaverHeight * 1.5);
   self.playerJumpingRight = false;
 
-  // prepare the game event listeners
 
-
-
-
-
-
+  // prepare the game event listeners binding keys
   document.addEventListener('keyup', function(e) {
     var keyPressed = e.keyCode;
     if (keyPressed === 37 && !self.isRunning) {
@@ -169,11 +153,7 @@ Game.prototype.start = function() {
 
       if (self.playerJumpingLeft === true) {
         self.playerJumpingRight = false;
-
       }
-
-
-
     } else if (keyPressed === 39 && !self.isRunning) {
       self.playerJumpingRight = true;
 
@@ -182,16 +162,5 @@ Game.prototype.start = function() {
       }
     }
   });
-
-
-
-
-
-
-  // start the animation loop
-  //-----attention when uncomenting draw function uncomment this----//
   self.draw();
 };
-
-
-//--------- if (self.plaverX < self.rightWallX - self.plaverWidth) {}
