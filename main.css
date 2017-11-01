@@ -38,7 +38,9 @@ html, body {
   height: 40px;
 }
 
-#game {}
+#game {
+  background: black;
+}
 
 header {
   display: flex;

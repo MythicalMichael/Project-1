@@ -27,7 +27,7 @@ function Game(container) {
   self.playerJumpingRight = null;
   self.playerJumpingLeft = null;
   self.isRunning = false;
-
+  self.playerCollision = false;
   self.levelUpInterval = 5000;
   self.obstacleInterval = 5000;
 
@@ -102,6 +102,9 @@ Game.prototype.setObstacleInterval = function() {
 Game.prototype.randomizeObstacleWidth = function() {
   var self = this;
   var width = self.obstacleMinWidth + Math.floor(Math.random() * self.level * self.obstacleWidthPerLevel);
+  if (width > 250) {
+    width = 250;
+  }
   return width;
 };
 
@@ -134,8 +137,35 @@ Game.prototype.updatePlayer = function() {
 };
 
 Game.prototype.detectCollision = function() {
-  // @todo if blab bla or bla bla or bla this.playerCollision = true;
+  var self = this;
+  // @todo if blab bla or bla bla or bla self.playerCollision = true;
+  //slef.playerY - playerHeight below
+  //   var self = this;
+  //   if (self.playerX && self.playerY && self.playerX + self.playerWidth >= self.obstacles.self.y && self.obstacles.self.y + self.obstacles.self.width) {
+  //     console.log("COLLISION");
+  //   }
+
+  for (var ix = 0; ix < self.obstacles.length; ix++) {
+    var obstacle = self.obstacles[ix];
+    var isRight = self.playerX + self.playerWidth >= obstacle.x;
+    var isLeft = self.playerX <= obstacle.x + obstacle.width;
+    var topBorder = self.playerY - self.playerHeight <= obstacle.y - obstacle.height;
+    var botBorder = self.playerY >= obstacle.y;
+    if (isRight && isLeft && topBorder && botBorder) {
+      self.playerCollision = true;
+
+    }
+  }
+
 };
+
+// Game.prototype.collision = function() {
+//   var self = this;
+//   self.ctx.fillStyle = "rgb(50,50,250)";
+//   self.ctx.fillRect(0, 0, self.width, self.height);
+//
+//
+// };
 
 Game.prototype.updateGround = function() {
   var self = this;
@@ -151,14 +181,14 @@ Game.prototype.updateGround = function() {
 
 Game.prototype.drawPlayer = function() {
   var self = this;
-  self.ctx.fillStyle = "rgb(50,50,250)";
+  self.ctx.fillStyle = "rgb(255,255,255)";
   self.ctx.fillRect(self.playerX, self.playerY, self.playerWidth, self.playerHeight);
 };
 
 Game.prototype.drawWalls = function() {
   var self = this;
 
-  self.ctx.fillStyle = "rgb(255,50,50)";
+  self.ctx.fillStyle = "rgb(255,255,255)";
   self.ctx.fillRect(self.leftWallX, 0, self.wallWidth, self.height);
   self.ctx.fillRect(self.rightWallX, 0, self.wallWidth, self.height);
 
@@ -166,7 +196,7 @@ Game.prototype.drawWalls = function() {
 
 Game.prototype.drawGround = function() {
   var self = this;
-  self.ctx.fillStyle = "rgb(102, 0, 102)";
+  self.ctx.fillStyle = "rgb(255, 255, 255)";
   self.ctx.fillRect(0, self.groundY, self.width, self.playerHeight / 2);
 };
 
@@ -188,7 +218,7 @@ Game.prototype.draw = function() {
       obstacle.update();
     });
 
-    self.detectCollision(); // self.playerCollision = true;
+    self.detectCollision();
   }
 
   //---clearing canvas----//
@@ -202,6 +232,9 @@ Game.prototype.draw = function() {
 
   if (self.playerCollision) {
     // @todo draw collision animation
+    self.ctx.fillStyle = "rgb(204, 0, 0)";
+    self.ctx.fillRect(0, 0, self.width, self.height);
+
   } else {
     self.drawPlayer();
     self.obstacles.forEach(function(obstacle) {
