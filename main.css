@@ -6,9 +6,9 @@ html {
   box-sizing: inherit;
 }
 
-* {
+/** {
   outline: black solid 1px;
-}
+}*/
 
 html, body {
   width: 100%;
@@ -32,14 +32,33 @@ html, body {
 
 .start-button {
   position: absolute;
-  top: 20px;
+  top: 200px;
   margin: 0 35%;
   width: 30%;
   height: 40px;
 }
 
+.reset-button {
+  position: absolute;
+  top: 200px;
+  margin: 0 35%;
+  width: 30%;
+  height: 40px;
+}
+
+.game-over-message {
+  position: absolute;
+  top: 20px;
+  margin: 0 35%;
+  width: 30%;
+  height: 40px;
+  font-family: sans-serif;
+  color: black;
+}
+
 #game {
-  background: black;
+  outline: black solid 1px;
+  background-image: url("img/bg.png")
 }
 
 header {
@@ -74,4 +93,31 @@ header {
 .button-container {
   display: flex;
   justify-content: center;
+}
+
+.btn {
+  background: #aa34d9;
+  background-image: -webkit-linear-gradient(top, #aa34d9, #2b32b8);
+  background-image: -moz-linear-gradient(top, #aa34d9, #2b32b8);
+  background-image: -ms-linear-gradient(top, #aa34d9, #2b32b8);
+  background-image: -o-linear-gradient(top, #aa34d9, #2b32b8);
+  background-image: linear-gradient(to bottom, #aa34d9, #2b32b8);
+  -webkit-border-radius: 7;
+  -moz-border-radius: 7;
+  border-radius: 7px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 27px;
+  padding: 2px 20px 10px 20px;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: #fc3c89;
+  background-image: -webkit-linear-gradient(top, #fc3c89, #2b32b8);
+  background-image: -moz-linear-gradient(top, #fc3c89, #2b32b8);
+  background-image: -ms-linear-gradient(top, #fc3c89, #2b32b8);
+  background-image: -o-linear-gradient(top, #fc3c89, #2b32b8);
+  background-image: linear-gradient(to bottom, #fc3c89, #2b32b8);
+  text-decoration: none;
 }

@@ -17,20 +17,22 @@ function Game(container) {
   self.speedPerLevel = 0.2;
 
   self.backgroundMoving = false;
-  self.leftWallX = 30;
-  self.rightWallX = 360;
+  self.leftWallX = 40;
+  self.rightWallX = 350;
   self.wallWidth = 10;
   self.playerWidth = 20;
   self.playerHeight = 40;
   self.groundY = self.height - (self.playerHeight / 2);
+  self.picPlayer = new Image();
+  self.picPlayer.src = 'img/player.png';
+
 
   self.playerJumpingRight = null;
   self.playerJumpingLeft = null;
   self.isRunning = false;
   self.playerCollision = false;
-  self.levelUpInterval = 5000;
-  self.obstacleInterval = 5000;
-
+  self.levelUpInterval = 1000;
+  self.obstacleInterval = 2000;
   self.level = 1;
 
   // -- creating the start button -- //
@@ -38,8 +40,10 @@ function Game(container) {
   // @todo uncomment later:
 
   var button = document.createElement('button');
-  button.innerText = 'start';
+  button.innerText = 'PLAY';
   button.classList.add('start-button');
+  button.classList.add('btn');
+  button.classList.add('btn:hover');
   self.container.appendChild(button);
 
   // @todo uncomment later:
@@ -51,23 +55,6 @@ function Game(container) {
 
 
   // ---- LEVEL UP INTERVAL ---- //
-
-  self.levelUpIntervalId = window.setInterval(function() {
-    self.level++;
-
-    console.log("LEVEL UP", self.level);
-
-    self.levelUpWarningCounter = 50;
-
-    self.obstacles.forEach(function(obstacle) {
-      obstacle.setSpeed(1 + self.level * self.speedPerLevel);
-    });
-
-    // @todo make obstacleInterval smaller (multiply by 0.9)
-    // @todo clear the obstacle interval
-    // @todo set the obstacle interval again
-
-  }, self.levelUpInterval);
 
 
 }
@@ -138,34 +125,27 @@ Game.prototype.updatePlayer = function() {
 
 Game.prototype.detectCollision = function() {
   var self = this;
-  // @todo if blab bla or bla bla or bla self.playerCollision = true;
-  //slef.playerY - playerHeight below
-  //   var self = this;
-  //   if (self.playerX && self.playerY && self.playerX + self.playerWidth >= self.obstacles.self.y && self.obstacles.self.y + self.obstacles.self.width) {
-  //     console.log("COLLISION");
-  //   }
 
   for (var ix = 0; ix < self.obstacles.length; ix++) {
     var obstacle = self.obstacles[ix];
     var isRight = self.playerX + self.playerWidth >= obstacle.x;
     var isLeft = self.playerX <= obstacle.x + obstacle.width;
-    var topBorder = self.playerY - self.playerHeight <= obstacle.y - obstacle.height;
-    var botBorder = self.playerY >= obstacle.y;
+    var topBorder = self.playerY <= obstacle.y + obstacle.height;
+    var botBorder = self.playerY + self.playerHeight >= obstacle.y;
+
     if (isRight && isLeft && topBorder && botBorder) {
       self.playerCollision = true;
-
+      self.gameOver();
     }
   }
 
 };
 
-// Game.prototype.collision = function() {
-//   var self = this;
-//   self.ctx.fillStyle = "rgb(50,50,250)";
-//   self.ctx.fillRect(0, 0, self.width, self.height);
-//
-//
-// };
+Game.prototype.updateCollisionAnimation = function() {
+  var self = this;
+
+
+};
 
 Game.prototype.updateGround = function() {
   var self = this;
@@ -182,13 +162,13 @@ Game.prototype.updateGround = function() {
 Game.prototype.drawPlayer = function() {
   var self = this;
   self.ctx.fillStyle = "rgb(255,255,255)";
-  self.ctx.fillRect(self.playerX, self.playerY, self.playerWidth, self.playerHeight);
+  self.ctx.drawImage(self.picPlayer, self.playerX, self.playerY, self.playerWidth, self.playerHeight);
 };
-
+//ctx.drawImage(img, 0, 0, 500, 500);
 Game.prototype.drawWalls = function() {
   var self = this;
 
-  self.ctx.fillStyle = "rgb(255,255,255)";
+  self.ctx.fillStyle = "rgba(0,0,0,0)";
   self.ctx.fillRect(self.leftWallX, 0, self.wallWidth, self.height);
   self.ctx.fillRect(self.rightWallX, 0, self.wallWidth, self.height);
 
@@ -196,10 +176,18 @@ Game.prototype.drawWalls = function() {
 
 Game.prototype.drawGround = function() {
   var self = this;
-  self.ctx.fillStyle = "rgb(255, 255, 255)";
+  self.ctx.fillStyle = "rgb(0, 0, 0)";
   self.ctx.fillRect(0, self.groundY, self.width, self.playerHeight / 2);
 };
 
+Game.prototype.collisionAnimation = function() {
+  var self = this;
+  //  ctx.setTransform()
+  self.drawPlayer();
+  // self.ctx.fillStyle = "rgb(204, 0, 0)";
+  // self.ctx.fillRect(0, 0, self.width, self.height);
+
+};
 
 //--------DRAW-------//
 Game.prototype.draw = function() {
@@ -209,6 +197,7 @@ Game.prototype.draw = function() {
 
   if (self.playerCollision) {
     // @todo update collision animation
+    self.updateCollisionAnimation();
   } else {
     self.updatePlayer();
     if (!self.backgroundMoving) {
@@ -225,6 +214,7 @@ Game.prototype.draw = function() {
   self.ctx.clearRect(0, 0, self.width, self.height);
 
   // ---redraw--- //
+  self.showScore();
   self.drawWalls();
   if (!self.backgroundMoving) {
     self.drawGround();
@@ -232,8 +222,8 @@ Game.prototype.draw = function() {
 
   if (self.playerCollision) {
     // @todo draw collision animation
-    self.ctx.fillStyle = "rgb(204, 0, 0)";
-    self.ctx.fillRect(0, 0, self.width, self.height);
+
+    self.collisionAnimation();
 
   } else {
     self.drawPlayer();
@@ -278,4 +268,60 @@ Game.prototype.start = function() {
     }
   });
   self.draw();
+
+  self.levelUpIntervalId = setInterval(function() {
+    self.level++;
+
+    console.log("LEVEL UP", self.level);
+
+    self.levelUpWarningCounter = 50;
+
+    self.obstacles.forEach(function(obstacle) {
+      obstacle.setSpeed(1 + self.level * self.speedPerLevel);
+    });
+
+    // @todo make obstacleInterval smaller (multiply by 0.9)
+    // @todo clear the obstacle interval
+    // @todo set the obstacle interval again
+
+  }, self.levelUpInterval);
+
+};
+
+
+Game.prototype.showScore = function() {
+  var self = this;
+  self.ctx.font = "25px sans-serif";
+  self.ctx.fillStyle = "white ";
+  self.ctx.fillText("Score: " + self.level, 160, 50);
+
+};
+
+// Game Over
+
+Game.prototype.gameOver = function() {
+  var self = this;
+
+  clearInterval(self.levelUpIntervalId);
+  var button = document.createElement('button');
+  button.innerText = 'PLAY AGAIN';
+  button.classList.add('reset-button');
+  button.classList.add('btn');
+  button.classList.add('btn:hover');
+  self.container.appendChild(button);
+
+
+  var gameOverMessage = document.createElement('h1');
+  gameOverMessage.innerText = 'GIT GUD SCRUB';
+  gameOverMessage.classList.add('game-over-message');
+  self.container.appendChild(gameOverMessage);
+
+
+
+  button.addEventListener("click", function() {
+    window.location.reload();
+    button.style.display = "none";
+  });
+
+
 };

@@ -36,6 +36,6 @@ Obstacle.prototype.update = function() {
 Obstacle.prototype.draw = function() {
   var self = this;
 
-  self.ctx.fillStyle = 'green';
+  self.ctx.fillStyle = 'black';
   self.ctx.fillRect(self.x, self.y, self.width, self.height);
 };

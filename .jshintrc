@@ -6,6 +6,9 @@
     "console": true,
     "window":  true,
     "document": true,
-    "Obstacle": true
+    "Obstacle": true,
+    "Game":true,
+    "clearInterval":true,
+    "setInterval":true
   }
 }
