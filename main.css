@@ -6,15 +6,14 @@ html {
   box-sizing: inherit;
 }
 
-/** {
-  outline: black solid 1px;
-}*/
+* {}
 
 html, body {
   width: 100%;
   height: 100%;
   margin: 0;
   overflow: hidden;
+  background-color: #000066;
 }
 
 #container {
@@ -24,36 +23,42 @@ html, body {
 
 #canvas-container {
   width: 100%;
-  height: 100%;
+  height: 80%;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: white;
+  outline: black solid 2px;
 }
 
 .start-button {
   position: absolute;
-  top: 170px;
+  top: 50px;
   margin: 0 35%;
   width: 30%;
   height: 40px;
+  outline: black solid 2px;
 }
 
 .reset-button {
   position: absolute;
-  top: 170px;
+  top: 50px;
   margin: 0 35%;
   width: 30%;
   height: 40px;
+  outline: black solid 2px;
 }
 
 .game-over-message {
   position: absolute;
-  top: 20px;
-  margin: 0 35%;
-  width: 30%;
-  height: 40px;
+  top: 50%;
   font-family: sans-serif;
-  color: black;
+  color: white;
+  font-size: 50px;
+  height: 65%;
+  width: 100%;
+  margin-left: 41%;
+  margin-right: 59%;
 }
 
 #game {
@@ -65,28 +70,11 @@ header {
   position: relative;
   display: flex;
   justify-content: center;
-  align-items: center;
-}
-
-.start-page {
-  font-family: sans-serif;
-  font-weight: 400;
-}
-
-.previous-score {
-  font-family: sans-serif;
-  font-weight: 300;
-  margin-left: 5%;
-  margin-top: 5%;
+  align-items: flex-start;
+  outline: black solid 2px;
 }
 
 .score {
-  font-family: sans-serif;
-  font-weight: 300;
-  margin-left: 5%;
-}
-
-.high-score {
   font-family: sans-serif;
   font-weight: 300;
   margin-left: 5%;
@@ -97,34 +85,43 @@ header {
   justify-content: center;
 }
 
-h1 {
-  display: flex;
-  align-content: flex-start
-}
-
 .btn {
-  background: #aa34d9;
-  background-image: -webkit-linear-gradient(top, #aa34d9, #2b32b8);
-  background-image: -moz-linear-gradient(top, #aa34d9, #2b32b8);
-  background-image: -ms-linear-gradient(top, #aa34d9, #2b32b8);
-  background-image: -o-linear-gradient(top, #aa34d9, #2b32b8);
-  background-image: linear-gradient(to bottom, #aa34d9, #2b32b8);
-  -webkit-border-radius: 7;
-  -moz-border-radius: 7;
-  border-radius: 7px;
-  font-family: sans-serif;
+  -moz-box-shadow: inset 0px 40px 0px -20px #1c03db;
+  -webkit-box-shadow: inset 0px 40px 0px -20px #1c03db;
+  box-shadow: inset 0px 40px 0px -20px #1c03db;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #200b66), color-stop(1, #1c00f0));
+  background: -moz-linear-gradient(top, #200b66 5%, #1c00f0 100%);
+  background: -webkit-linear-gradient(top, #200b66 5%, #1c00f0 100%);
+  background: -o-linear-gradient(top, #200b66 5%, #1c00f0 100%);
+  background: -ms-linear-gradient(top, #200b66 5%, #1c00f0 100%);
+  background: linear-gradient(to bottom, #200b66 5%, #1c00f0 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#200b66', endColorstr='#1c00f0', GradientType=0);
+  background-color: #200b66;
+  border: 1px solid #000000;
+  display: inline-block;
+  cursor: pointer;
   color: #ffffff;
-  font-size: 27px;
-  padding: 2px 20px 10px 20px;
+  font-family: Arial;
+  font-size: 25px;
+  font-weight: bold;
+  padding: 9px 30px;
   text-decoration: none;
+  text-shadow: 0px 0px 0px #360036;
 }
 
 .btn:hover {
-  background: #fc3c89;
-  background-image: -webkit-linear-gradient(top, #fc3c89, #2b32b8);
-  background-image: -moz-linear-gradient(top, #fc3c89, #2b32b8);
-  background-image: -ms-linear-gradient(top, #fc3c89, #2b32b8);
-  background-image: -o-linear-gradient(top, #fc3c89, #2b32b8);
-  background-image: linear-gradient(to bottom, #fc3c89, #2b32b8);
-  text-decoration: none;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #1c00f0), color-stop(1, #200b66));
+  background: -moz-linear-gradient(top, #1c00f0 5%, #200b66 100%);
+  background: -webkit-linear-gradient(top, #1c00f0 5%, #200b66 100%);
+  background: -o-linear-gradient(top, #1c00f0 5%, #200b66 100%);
+  background: -ms-linear-gradient(top, #1c00f0 5%, #200b66 100%);
+  background: linear-gradient(to bottom, #1c00f0 5%, #200b66 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#1c00f0', endColorstr='#200b66', GradientType=0);
+  background-color: #1c00f0;
+}
+
+.top {
+  height: 100px;
+  background-color: #000066;
+  outline: black solid 2px;
 }

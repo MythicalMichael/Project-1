@@ -26,7 +26,7 @@ function Game(container) {
   self.picPlayer = new Image();
   self.picPlayer.src = 'img/player.png';
   self.gitgud = new Image();
-  self.gitgud.src = 'img/gitgud.png';
+  //self.gitgud.src = 'img/gitgud.png';
 
   self.playerJumpingRight = null;
   self.playerJumpingLeft = null;
@@ -216,8 +216,8 @@ Game.prototype.drawGround = function() {
 
 
 Game.prototype.collisionAnimation = function() {
-  var self = this;
-  self.ctx.drawImage(self.gitgud, 0, 0, self.width, self.height);
+  //  var self = this;
+  //  self.ctx.drawImage(self.gitgud, 0, 0, self.width, self.height);
 
   // self.ctx.fillStyle = "rgb(204, 0, 0)";
   // self.ctx.fillRect(0, 0, self.width, self.height);
@@ -350,10 +350,10 @@ Game.prototype.gameOver = function() {
   self.container.appendChild(button);
 
 
-  // var gameOverMessage = document.createElement('h1');
-  // gameOverMessage.innerText = 'GIT GUD SCRUB';
-  // gameOverMessage.classList.add('game-over-message');
-  // self.header.appendChild(gameOverMessage);
+  var gameOverMessage = document.createElement('h2');
+  gameOverMessage.innerText = 'GAME OVER';
+  gameOverMessage.classList.add('game-over-message');
+  self.container.appendChild(gameOverMessage);
 
 
 
