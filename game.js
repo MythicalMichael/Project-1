@@ -25,7 +25,8 @@ function Game(container) {
   self.groundY = self.height - (self.playerHeight / 2);
   self.picPlayer = new Image();
   self.picPlayer.src = 'img/player.png';
-
+  self.gitgud = new Image();
+  self.gitgud.src = 'img/gitgud.png';
 
   self.playerJumpingRight = null;
   self.playerJumpingLeft = null;
@@ -35,6 +36,9 @@ function Game(container) {
   self.obstacleInterval = 2000;
   self.level = 1;
 
+  self.collisionWidth = 0;
+
+  self.header = document.getElementsByTagName('header')[0];
   // -- creating the start button -- //
 
   // @todo uncomment later:
@@ -50,6 +54,7 @@ function Game(container) {
 
   button.addEventListener("click", function() {
     self.start();
+
     button.style.display = "none";
   });
 
@@ -136,22 +141,48 @@ Game.prototype.detectCollision = function() {
     if (isRight && isLeft && topBorder && botBorder) {
       self.playerCollision = true;
       self.gameOver();
+
+
     }
   }
 
 };
 
-Game.prototype.updateCollisionAnimation = function() {
-  var self = this;
 
+
+Game.prototype.updateCollisionAnimation = function() {
+  // var self = this;
+  // self.collisionWidth += 1;
+  // self.ctx.fillRect(self.playerX, self.playerY, self.playerWidth, self.playerHeight);
 
 };
 
+// Game.prototype.updateGroundAfterCollision = function() {
+//   var self = this;
+//   self.groundY += 0.5;
+//
+//
+// };
+
+
 Game.prototype.updateGround = function() {
   var self = this;
-  self.groundY += 1;
+  self.groundY += 0.2;
   if (self.groundY > self.height) {
     self.backgroundMoving = true;
+    $(function() {
+      if (self.backgroundMoving === true) {
+
+
+        var x = 0;
+        self.backgroundInterval = setInterval(function() {
+          x += 1;
+          $('#game').css('background-position', " 0 " + x + "px ");
+        }, 10);
+      }
+
+
+    });
     self.setObstacleInterval();
   }
 };
@@ -180,10 +211,14 @@ Game.prototype.drawGround = function() {
   self.ctx.fillRect(0, self.groundY, self.width, self.playerHeight / 2);
 };
 
+
+
+
+
 Game.prototype.collisionAnimation = function() {
   var self = this;
-  //  ctx.setTransform()
-  self.drawPlayer();
+  self.ctx.drawImage(self.gitgud, 0, 0, self.width, self.height);
+
   // self.ctx.fillStyle = "rgb(204, 0, 0)";
   // self.ctx.fillRect(0, 0, self.width, self.height);
 
@@ -224,6 +259,9 @@ Game.prototype.draw = function() {
     // @todo draw collision animation
 
     self.collisionAnimation();
+
+
+
 
   } else {
     self.drawPlayer();
@@ -266,6 +304,7 @@ Game.prototype.start = function() {
         self.playerJumpingLeft = false;
       }
     }
+
   });
   self.draw();
 
@@ -301,7 +340,7 @@ Game.prototype.showScore = function() {
 
 Game.prototype.gameOver = function() {
   var self = this;
-
+  clearInterval(self.backgroundInterval);
   clearInterval(self.levelUpIntervalId);
   var button = document.createElement('button');
   button.innerText = 'PLAY AGAIN';
@@ -311,10 +350,10 @@ Game.prototype.gameOver = function() {
   self.container.appendChild(button);
 
 
-  var gameOverMessage = document.createElement('h1');
-  gameOverMessage.innerText = 'GIT GUD SCRUB';
-  gameOverMessage.classList.add('game-over-message');
-  self.container.appendChild(gameOverMessage);
+  // var gameOverMessage = document.createElement('h1');
+  // gameOverMessage.innerText = 'GIT GUD SCRUB';
+  // gameOverMessage.classList.add('game-over-message');
+  // self.header.appendChild(gameOverMessage);
 
 
 

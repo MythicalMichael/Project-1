@@ -9,6 +9,7 @@
     "Obstacle": true,
     "Game":true,
     "clearInterval":true,
-    "setInterval":true
+    "setInterval":true,
+    "$":true
   }
 }

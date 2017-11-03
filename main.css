@@ -32,7 +32,7 @@ html, body {
 
 .start-button {
   position: absolute;
-  top: 200px;
+  top: 170px;
   margin: 0 35%;
   width: 30%;
   height: 40px;
@@ -40,7 +40,7 @@ html, body {
 
 .reset-button {
   position: absolute;
-  top: 200px;
+  top: 170px;
   margin: 0 35%;
   width: 30%;
   height: 40px;
@@ -62,8 +62,10 @@ html, body {
 }
 
 header {
+  position: relative;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .start-page {
@@ -95,6 +97,11 @@ header {
   justify-content: center;
 }
 
+h1 {
+  display: flex;
+  align-content: flex-start
+}
+
 .btn {
   background: #aa34d9;
   background-image: -webkit-linear-gradient(top, #aa34d9, #2b32b8);
@@ -105,7 +112,7 @@ header {
   -webkit-border-radius: 7;
   -moz-border-radius: 7;
   border-radius: 7px;
-  font-family: Arial;
+  font-family: sans-serif;
   color: #ffffff;
   font-size: 27px;
   padding: 2px 20px 10px 20px;
